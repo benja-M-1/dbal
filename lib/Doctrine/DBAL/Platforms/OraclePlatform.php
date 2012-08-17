@@ -644,6 +644,7 @@ LEFT JOIN user_cons_columns r_cols
     {
         $limit = (int) $limit;
         $offset = (int) $offset;
+        $rownumAlias = 'doctrine_rownum';
 
         if (preg_match('/^\s*SELECT/i', $query)) {
             if (!preg_match('/\sFROM\s/i', $query)) {
@@ -654,7 +655,7 @@ LEFT JOIN user_cons_columns r_cols
                 $column = '*';
                 if ($offset > 0) {
                     $min = $offset + 1;
-                    $query = 'SELECT * FROM (SELECT a.' . $column . ', rownum AS doctrine_rownum FROM (' .
+                    $query = 'SELECT * FROM (SELECT a.' . $column . ', rownum AS ' . $rownumAlias . ' FROM (' .
                             $query .
                             ') a WHERE rownum <= ' . $max . ') WHERE doctrine_rownum >= ' . $min;
                 } else {
@@ -662,6 +663,8 @@ LEFT JOIN user_cons_columns r_cols
                 }
             }
         }
+
+        $this->doctrineExtraColumns[] = $rownumAlias;
 
         return $query;
     }

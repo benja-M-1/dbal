@@ -115,6 +115,14 @@ abstract class AbstractPlatform
     protected $_keywords;
 
     /**
+     * Holds extra columns added for
+     * queries specifcally for the platform.
+     *
+     * @var array
+     */
+    protected $doctrineExtraColumns = array();
+
+    /**
      * Constructor.
      */
     public function __construct() {}
@@ -2850,5 +2858,13 @@ abstract class AbstractPlatform
     protected function getReservedKeywordsClass()
     {
         throw DBALException::notSupported(__METHOD__);
+    }
+
+    /**
+     * @return array
+     */
+    public function getDoctrineExtraColumns()
+    {
+        return $this->doctrineExtraColumns;
     }
 }
